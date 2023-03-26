@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+  <h1>Dashboard</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>NoteSheet ID</th>
+        <th>Student</th>
+        <th>Channels</th>
+        <th>Status</th>
+        {% if user.is_class_coordinator %}
+          <th>Action</th>
+        {% endif %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for notesheet in notesheets %}
+        <tr>
+          <td>{{ notesheet.id }}</td>
+          <td>{{ notesheet.student.user.email }}</td>
+          <td>{{ notesheet.channel }}</td>
+          <td>
+            {% if notesheet.is_pending %}
+              Pending
+            {% elif notesheet.is_approved %}
+              Approved
+            {% elif notesheet.is_rejected %}
+              Rejected
+            {% endif %}
+          </td>
+          {% if user.is_class_coordinator %}
+            <td>
+              {% if notesheet.is_pending %}
+                <a href="{% url 'review_notesheet' notesheet.id %}">Review</a>
+              {% endif %}
+            </td>
+          {% endif %}
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="4">No NoteSheets available.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Review NoteSheet{% endblock %}
+
+{% block content %}
+  <h1>Review NoteSheet</h1>
+  {% if errors %}
+    <div>{{ errors }}</div>
+  {% endif %}
+  <form method="post">
+    {% csrf_token %}
+    <label>Status:</label>
+    <select name="status" required>
+      <option value="approved">Approve</option>
+      <option value="rejected">Reject</option>
+    </select>
+    <br>
+    <button type="submit">Submit</button>
+  </form>
+{% endblock %}
